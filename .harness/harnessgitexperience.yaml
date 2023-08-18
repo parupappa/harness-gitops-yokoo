@@ -1,5 +1,5 @@
 pipeline:
-  name: harness-git-experience-git-edit
+  name: harness-git-experience-git-edit-new
   identifier: harnessgitexperience
   projectIdentifier: tekton
   orgIdentifier: default
