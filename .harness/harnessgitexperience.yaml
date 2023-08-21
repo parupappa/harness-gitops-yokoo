@@ -32,7 +32,7 @@ pipeline:
                     approverInputs: []
         tags: {}
     - stage:
-        name: deploy-stg
+        name: deploy-gke-cluster
         identifier: deploystg
         description: ""
         type: Deployment
