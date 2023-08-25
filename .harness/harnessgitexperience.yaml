@@ -1,5 +1,5 @@
 pipeline:
-  name: harness-git-experience-git-edit-new-yokoo
+  name: harness-git-experience
   identifier: harnessgitexperience
   projectIdentifier: tekton
   orgIdentifier: default
@@ -32,7 +32,7 @@ pipeline:
                     approverInputs: []
         tags: {}
     - stage:
-        name: deploy-stg
+        name: deploy-gke-cluster
         identifier: deploystg
         description: ""
         type: Deployment
