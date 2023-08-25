@@ -1,0 +1,83 @@
+# Define the pipeline's YAML configuration here.
+# The pipeline's YAML can be viewed from the GUI.
+# Below is an example of the pipeline, as described in the README.md.
+pipeline:
+  name: <your_pipelines_name>
+  identifier: <your_pipelines_id>
+  projectIdentifier: <your_project_id>
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: approval
+        identifier: approval
+        description: ""
+        type: Approval
+        spec:
+          execution:
+            steps:
+              - step:
+                  name: arroval
+                  identifier: arroval
+                  type: HarnessApproval
+                  timeout: 1d
+                  spec:
+                    approvalMessage: |-
+                      Please review the following information
+                      and approve the pipeline progression
+                    includePipelineExecutionHistory: true
+                    approvers:
+                      minimumCount: 1
+                      disallowPipelineExecutor: false
+                      userGroups:
+                        - account._account_all_users
+                    isAutoRejectEnabled: false
+                    approverInputs: []
+        tags: {}
+    - stage:
+        name: stg deploy
+        identifier: stg_deploy
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          service:
+            serviceRef: <your_service_id>
+            serviceInputs:
+              serviceDefinition:
+                type: Kubernetes
+                spec:
+                  artifacts:
+                    primary:
+                      primaryArtifactRef: <+input>
+                      sources: <+input>
+          environment:
+            environmentRef: <your_environment_id>
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: <your_infrastructure_id>
+          execution:
+            steps:
+              - step:
+                  name: Rollout Deployment
+                  identifier: rolloutDeployment
+                  type: K8sRollingDeploy
+                  timeout: 10m
+                  spec:
+                    skipDryRun: false
+                    pruningEnabled: false
+          rollbackSteps:
+            - step:
+                name: Rollback Rollout Deployment
+                identifier: rollbackRolloutDeployment
+                type: K8sRollingRollback
+                timeout: 10m
+                spec:
+                  pruningEnabled: false
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback

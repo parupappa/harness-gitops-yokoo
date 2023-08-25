@@ -1,0 +1,42 @@
+# Define the pipeline's YAML configuration here.
+# The pipeline's YAML can be viewed from the GUI.
+# Below is an example of the pipeline, as described in the README.md.
+service:
+  name: <your_service_name>
+  identifier: <your_service_id>
+  serviceDefinition:
+    type: Kubernetes
+    spec:
+      manifests:
+        - manifest:
+            identifier: <your_service_manifest_id>
+            type: HelmChart
+            spec:
+              store:
+                type: Github
+                spec:
+                  connectorRef: <your_connector_id>
+                  gitFetchType: Branch
+                  folderPath: rc-sample
+                  branch: <your_service_connector_brach>
+              subChartPath: ""
+              valuesPaths:
+                - /rc-sample/values.yaml
+                - /rc-sample/values/stg.yaml
+              skipResourceVersioning: false
+              enableDeclarativeRollback: false
+              helmVersion: V3
+              fetchHelmChartMetadata: false
+      artifacts:
+        primary:
+          primaryArtifactRef: <+input>
+          sources:
+            - identifier: Primary
+              spec:
+                connectorRef: <your_connector_id>
+                packageName: <your_service_artifact_registry>
+                packageType: container
+                version: latest
+                org: <your_service_artifact_org>
+              type: GithubPackageRegistry
+  gitOpsEnabled: false

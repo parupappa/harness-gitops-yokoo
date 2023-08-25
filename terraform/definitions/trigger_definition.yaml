@@ -1,0 +1,45 @@
+# Define the pipeline's YAML configuration here.
+# The pipeline's YAML can be viewed from the GUI.
+# Below is an example of the pipeline, as described in the README.md.
+trigger:
+  name: "<your_trigger_name>"
+  identifier: <your_trigger_id>
+  enabled: true
+  encryptedWebhookSecretIdentifier: ""
+  description: ""
+  tags: {}
+  orgIdentifier: default
+  stagesToExecute: []
+  projectIdentifier: <your_project_id>
+  pipelineIdentifier: <your_pipelines_id>
+  source:
+    type: Webhook
+    spec:
+      type: Github
+      spec:
+        type: Push
+        spec:
+          connectorRef: <your_connector_id>
+          autoAbortPreviousExecutions: false
+          payloadConditions:
+            - key: targetBranch
+              operator: Equals
+              value: <your_trigger_branch>
+          headerConditions: []
+          actions: []
+  inputYaml: |
+    pipeline:
+      identifier: <your_pipelines_id>
+      stages:
+        - stage:
+            identifier: stg_deploy
+            type: Deployment
+            spec:
+              service:
+                serviceInputs:
+                  serviceDefinition:
+                    type: Kubernetes
+                    spec:
+                      artifacts:
+                        primary:
+                          primaryArtifactRef: Primary

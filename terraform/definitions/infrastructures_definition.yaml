@@ -1,0 +1,19 @@
+# Define the pipeline's YAML configuration here.
+# The pipeline's YAML can be viewed from the GUI.
+# Below is an example of the pipeline, as described in the README.md.
+infrastructureDefinition:
+  name: <your_infrastructure_name>
+  identifier: <your_infrastructure_id>
+  description: ""
+  tags: {}
+  orgIdentifier: default
+  projectIdentifier: <your_project_id>
+  environmentRef: <your_environment_id>
+  deploymentType: Kubernetes
+  type: KubernetesGcp
+  spec:
+    connectorRef: <your_connector_id>
+    cluster: <your_cluster_name>
+    namespace: <your_cluster_namespace>
+    releaseName: <your_cluster_release_name>
+allowSimultaneousDeployments: false
